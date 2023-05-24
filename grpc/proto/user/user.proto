@@ -9,3 +9,30 @@ message User{
     string name = 2;
     string email = 3;
 }
+
+message AuthRequest{
+    string email = 1;
+    string password = 2;
+}
+
+message AuthResponse{
+    string id = 1;
+    string accessToken = 2;
+    string name = 3;
+    string email = 4;
+}
+
+message GetUsersRequest{
+    repeated string userIds = 1;
+}
+
+message GetUsersResponse{
+    repeated User users = 1;
+}
+
+service UserService{
+    rpc Login(AuthRequest) returns (AuthResponse){};
+    rpc GetUsers(GetUsersRequest) returns (GetUsersResponse){}
+}
+
+
