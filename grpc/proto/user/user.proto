@@ -26,13 +26,19 @@ message GetUsersRequest{
     repeated string userIds = 1;
 }
 
+message GetUserRequest{
+    repeated string userId = 1;
+}
+
 message GetUsersResponse{
     repeated User users = 1;
 }
 
+
 service UserService{
     rpc Login(AuthRequest) returns (AuthResponse){};
     rpc GetUsers(GetUsersRequest) returns (GetUsersResponse){}
+    rpc GetUser(GetUserRequest) returns (User){}
 }
 
 
