@@ -27,7 +27,8 @@ message GetUsersRequest{
 }
 
 message GetUserRequest{
-    repeated string userId = 1;
+    string userId = 2;
+    reserved 1;
 }
 
 message GetUsersResponse{
