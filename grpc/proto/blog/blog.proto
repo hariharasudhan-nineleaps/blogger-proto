@@ -59,9 +59,15 @@ message GetUserBlogRequest{
     string blogId  = 1;
 }
 
+message ViewBlogRequest{
+    string blogId  = 1;
+}
+
+message ViewBlogResponse{}
 
 service BlogService{
     rpc CreateBlog(CreateBlogRequest) returns (CreateBlogResponse){}
     rpc GetUserBlogs(UserBlogRequest) returns (UserBlogResponse){}
     rpc GetUserBlog(GetUserBlogRequest) returns (UserBlog){}
+    rpc ViewBlog(ViewBlogRequest) returns (ViewBlogResponse){}
 }

@@ -25,6 +25,7 @@ type BlogServiceClient interface {
 	CreateBlog(ctx context.Context, in *CreateBlogRequest, opts ...grpc.CallOption) (*CreateBlogResponse, error)
 	GetUserBlogs(ctx context.Context, in *UserBlogRequest, opts ...grpc.CallOption) (*UserBlogResponse, error)
 	GetUserBlog(ctx context.Context, in *GetUserBlogRequest, opts ...grpc.CallOption) (*UserBlog, error)
+	ViewBlog(ctx context.Context, in *ViewBlogRequest, opts ...grpc.CallOption) (*ViewBlogResponse, error)
 }
 
 type blogServiceClient struct {
@@ -62,6 +63,15 @@ func (c *blogServiceClient) GetUserBlog(ctx context.Context, in *GetUserBlogRequ
 	return out, nil
 }
 
+func (c *blogServiceClient) ViewBlog(ctx context.Context, in *ViewBlogRequest, opts ...grpc.CallOption) (*ViewBlogResponse, error) {
+	out := new(ViewBlogResponse)
+	err := c.cc.Invoke(ctx, "/blog.BlogService/ViewBlog", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BlogServiceServer is the server API for BlogService service.
 // All implementations must embed UnimplementedBlogServiceServer
 // for forward compatibility
@@ -69,6 +79,7 @@ type BlogServiceServer interface {
 	CreateBlog(context.Context, *CreateBlogRequest) (*CreateBlogResponse, error)
 	GetUserBlogs(context.Context, *UserBlogRequest) (*UserBlogResponse, error)
 	GetUserBlog(context.Context, *GetUserBlogRequest) (*UserBlog, error)
+	ViewBlog(context.Context, *ViewBlogRequest) (*ViewBlogResponse, error)
 	mustEmbedUnimplementedBlogServiceServer()
 }
 
@@ -84,6 +95,9 @@ func (UnimplementedBlogServiceServer) GetUserBlogs(context.Context, *UserBlogReq
 }
 func (UnimplementedBlogServiceServer) GetUserBlog(context.Context, *GetUserBlogRequest) (*UserBlog, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserBlog not implemented")
+}
+func (UnimplementedBlogServiceServer) ViewBlog(context.Context, *ViewBlogRequest) (*ViewBlogResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ViewBlog not implemented")
 }
 func (UnimplementedBlogServiceServer) mustEmbedUnimplementedBlogServiceServer() {}
 
@@ -152,6 +166,24 @@ func _BlogService_GetUserBlog_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BlogService_ViewBlog_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ViewBlogRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BlogServiceServer).ViewBlog(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/blog.BlogService/ViewBlog",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BlogServiceServer).ViewBlog(ctx, req.(*ViewBlogRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BlogService_ServiceDesc is the grpc.ServiceDesc for BlogService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -170,6 +202,10 @@ var BlogService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUserBlog",
 			Handler:    _BlogService_GetUserBlog_Handler,
+		},
+		{
+			MethodName: "ViewBlog",
+			Handler:    _BlogService_ViewBlog_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
