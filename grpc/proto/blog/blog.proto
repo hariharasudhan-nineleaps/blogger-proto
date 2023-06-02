@@ -65,9 +65,22 @@ message ViewBlogRequest{
 
 message ViewBlogResponse{}
 
+
+message MostViewedBlogsResponseMetadata{
+    uint32 total = 1;
+    optional string prev = 2;
+    optional string next = 3;
+}
+message MostViewedBlogsRequest{}
+message MostViewedBlogsResponse{
+    MostViewedBlogsResponseMetadata metadata = 1;
+    repeated UserBlog blogs = 2;
+}
+
 service BlogService{
     rpc CreateBlog(CreateBlogRequest) returns (CreateBlogResponse){}
     rpc GetUserBlogs(UserBlogRequest) returns (UserBlogResponse){}
     rpc GetUserBlog(GetUserBlogRequest) returns (UserBlog){}
     rpc ViewBlog(ViewBlogRequest) returns (ViewBlogResponse){}
+    rpc MostViewedBlogs(MostViewedBlogsRequest) returns (MostViewedBlogsResponse){}
 }

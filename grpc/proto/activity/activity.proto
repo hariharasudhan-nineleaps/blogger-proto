@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package activity;
+
+option go_package = "github.com/hariharasudhan-nineleaps/blogger-proto/grpc/proto/activity";
+
+
+message MostViewedBlogIdsRequest{}
+message MostViewedBlogIdsResponse{
+    repeated string blogIds = 1;
+}
+
+service ActivityService{
+    rpc MostViewedBlogIds(MostViewedBlogIdsRequest) returns (MostViewedBlogIdsResponse){}
+}
