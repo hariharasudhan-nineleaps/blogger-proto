@@ -1,0 +1,28 @@
+syntax = "proto3";
+package auth;
+option go_package = "github.com/hariharasudhan-nineleaps/blogger-proto/grpc/proto/auth";
+
+message GenerateTokenRequest{
+    string userId = 1;
+    string email = 2;
+    string name = 3;
+}
+
+message GenerateTokenResponse{
+    string opaqueToken = 1;
+    string accessToken = 2;
+}
+
+message VerifyTokenRequest{
+    string opaqueToken = 1;
+}
+
+message VerifyTokenResponse{
+    bool isValid = 1;
+    string accessToken = 2;
+}
+
+service AuthService{
+    rpc GenerateToken(GenerateTokenRequest) returns (GenerateTokenResponse){}
+    rpc VerifyToken(VerifyTokenRequest) returns (VerifyTokenResponse){}
+}
